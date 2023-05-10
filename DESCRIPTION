@@ -1,0 +1,18 @@
+Package: PRICED
+Title: PRevalence, Incidence, and Clearance Estimation adjusted for Diagnostic errors
+Version: 0.0.0.9000
+Authors@R: 
+    person("Daniel K.", "Sewell", , "daniel-sewell@uiowa.edu", role = c("aut", "cre"))
+Description: Diagnostic errors cause serious problems when estimating clearance rates, incidence rates, and prevalence.  This package implements the PRICED model, which accounts for diagnostic errors in estimating these three quantities within the Bayesian paradigm.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    magrittr,
+	dplyr,
+	adaptMCMC,
+	methods,
+	coda,
+	tibble,
+	numDeriv
