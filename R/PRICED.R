@@ -133,7 +133,7 @@ PRICED = function(formula_prevalence,
   if(!is.null(seed)){
     set.seed(seed)
   }else{
-    warning("Make sure to set your seed!")
+    if(method == "adaptMCMC") warning("Make sure to set your seed!")
   }
 
 
