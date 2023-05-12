@@ -102,9 +102,9 @@ simulate_PRICED = function(nsim = 1,
     beta_C[-1] = beta_C_slopes
     
     parameters[[it]] =
-      list(beta_C = beta_C,
+      list(beta_P = beta_P,
            beta_I = beta_I,
-           beta_P = beta_P,
+           beta_C = beta_C,
            sensitivity = sensitivity,
            specificity = specificity)
 
