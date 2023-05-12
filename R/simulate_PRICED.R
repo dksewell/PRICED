@@ -29,9 +29,10 @@ simulate_PRICED = function(nsim = 1,
                            bl_clearance_rate = 1/3,
                            sensitivity = 0.75,
                            specificity = 0.98,
-                           beta_C_slopes = c(0,1),
-                           beta_I_slopes = c(-1.5,0.5),
-                           beta_pr_slope = 1.5){
+                           beta_P_slopes = c(2,-2,0),
+                           beta_I_slopes = c(2,-2,0),
+                           beta_C_slopes = c(-2,2,0)
+                           ){
 
   # Set seed for reproducibility
   if(!is.null(seed)){
@@ -81,39 +82,39 @@ simulate_PRICED = function(nsim = 1,
              x3 = rnorm(nrow(sic_data[[it]])))
 
     # Set up parameter values
-    beta_C = numeric(3)
-    beta_I = numeric(3)
-    beta_pr = numeric(2)
+    beta_C = numeric(4)
+    beta_I = numeric(4)
+    beta_P = numeric(4)
 
-    beta_C[1] = log(bl_clearance_rate) - sum(beta_C_slopes)
-    beta_C[-1] = beta_C_slopes
-    beta_I[1] = log(bl_incidence_rate)
+    beta_P[1] = 
+      log(bl_prevalence / (1 - bl_prevalence)) - 
+      sum(beta_P_slopes * colMeans(cbind(sic_data[[it]]$x1,sic_data[[it]]$x2,sic_data[[it]]$x3)))
+    beta_P[-1] = beta_P_slopes
+    
+    beta_I[1] = 
+      log(bl_incidence_rate) - 
+      sum(beta_I_slopes * colMeans(cbind(sic_data[[it]]$x1,sic_data[[it]]$x2,sic_data[[it]]$x3)))
     beta_I[-1] = beta_I_slopes
-    beta_pr[1] = log(bl_prevalence / (1 - bl_prevalence))
-    beta_pr[2] = beta_pr_slope
-
+    
+    beta_C[1] = 
+      log(bl_clearance_rate) - 
+      sum(beta_C_slopes * colMeans(cbind(sic_data[[it]]$x1,sic_data[[it]]$x2,sic_data[[it]]$x3)))
+    beta_C[-1] = beta_C_slopes
+    
     parameters[[it]] =
       list(beta_C = beta_C,
            beta_I = beta_I,
-           beta_pr = beta_pr,
+           beta_P = beta_P,
            sensitivity = sensitivity,
            specificity = specificity)
 
     # Create design matrix
-    X = list()
-    X$clearance =
-      sic_data[[it]] %>%
-      select(x1,x2) %>%
-      as.matrix()
-    X$incidence =
-      sic_data[[it]] %>%
-      select(x1,x3) %>%
-      as.matrix()
-    X$prevalence =
-      sic_data[[it]] %>%
-      select(x1) %>%
-      as.matrix()
-    X %<>% lapply(function(x) cbind(`(Intercept)` = 1,x))
+    X =
+      cbind(`(Intercept)` = 1,
+            sic_data[[it]] %>%
+              select(x1,x2,x3) %>%
+              as.matrix()
+      )
 
 
 
@@ -124,7 +125,7 @@ simulate_PRICED = function(nsim = 1,
     sic_data[[it]]$p[ind] =
       rbinom(length(ind),
              1,
-             1 / (1 + exp(-X$prevalence[ind,] %*% beta_pr)))
+             1 / (1 + exp(-X[ind,] %*% beta_P)))
 
 
     # Simulate data for each subject
@@ -142,11 +143,11 @@ simulate_PRICED = function(nsim = 1,
         lambda_it =
           (1 - y_tm1) *
           (
-            X$incidence[i_index[tt],] %*% beta_I
+            X[i_index[tt],] %*% beta_I
           ) +
           y_tm1 *
           (
-            X$clearance[i_index[tt],] %*% beta_C
+            X[i_index[tt],] %*% beta_C
           )
         lambda_it = exp(lambda_it)
 
