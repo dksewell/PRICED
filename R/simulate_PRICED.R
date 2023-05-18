@@ -59,8 +59,8 @@ simulate_PRICED = function(nsim = 1,
     sic_data[[it]] =
       tibble(subject = rep(1:N_subj,N_time),
              time = rgamma(sum(N_time),
-                           shape = 2,
-                           rate = 2)) %>%
+                           shape = 20,
+                           rate = 0.8)) %>%
       arrange(subject,
               time)
 
