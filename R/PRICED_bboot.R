@@ -463,6 +463,6 @@ PRICED_bboot = function(formula_prevalence,
          formula_incidence = formula_incidence,
          formula_clearance = formula_clearance)
   
-  class(return_object) = "PRICED_boot"
+  class(return_object) = "PRICED_bboot"
   return(return_object)
 }

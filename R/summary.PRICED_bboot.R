@@ -31,12 +31,12 @@
 #' 
 #' @export
 
-summary.PRICED_boot = function(object,
-                               CI_level = 0.95,
-                               estimator = c("mean","median","mode"),
-                               CI_method = c("HPD","central")[1],
-                               print = TRUE,
-                               burnin = 0){
+summary.PRICED_bboot = function(object,
+                                CI_level = 0.95,
+                                estimator = c("mean","median","mode"),
+                                CI_method = c("HPD","central")[1],
+                                print = TRUE,
+                                burnin = 0){
 
   a = 1 - CI_level
 
