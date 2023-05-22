@@ -10,40 +10,29 @@
 #'
 #' @examples
 #' PRICED_data =
-#' simulate_PRICED(seed = 2023,N_subj = 500, N_time = 10)
+#'   simulate_PRICED(seed = 1,N_subj = 500, N_time = 10)
 #'
-#' PRICED_fit1 =
-#'   PRICED(formula_prevalence = ~ x1,
-#'          formula_incidence = ~ x1 + x3,
-#'          formula_clearance = p_observed ~ x1 + x2 + (time | subject),
+#' formula_clearance =  p_observed ~ x1 + x2 + x3 + (time | subject)
+#' formula_incidence =  ~ x1 + x2 + x3
+#' formula_prevalence =  ~ x1 + x2 + x3
+#'
+#' # Fit the PRICED model, accounting for diagnostic error
+#' PRICED_fit =
+#'   PRICED(formula_prevalence,
+#'          formula_incidence,
+#'          formula_clearance,
 #'          PRICED_data$data[[1]],
 #'          prior_prevalence = list(location = 0, scale = 2.5, autoscale = TRUE),
 #'          prior_incidence = list(location = 0, scale = 2.5, autoscale = TRUE),
 #'          prior_clearance = list(location = 0, scale = 2.5, autoscale = TRUE),
 #'          method = "normal",
-#'          seed = 1,
 #'          sensitivity = 0.75,
 #'          specificity = 0.98,
 #'          verbose = TRUE)
-#' summary(PRICED_fit1)
-#'
-#' set.seed(123)
-#' PRICED_fit2 =
-#'   PRICED(formula_prevalence = ~ x1,
-#'          formula_incidence = ~ x1 + x3,
-#'          formula_clearance = p_observed ~ x1 + x2 + (time | subject),
-#'          PRICED_data$data[[1]],
-#'          prior_prevalence = list(location = 0, scale = 2.5, autoscale = TRUE),
-#'          prior_incidence = list(location = 0, scale = 2.5, autoscale = TRUE),
-#'          prior_clearance = list(location = 0, scale = 2.5, autoscale = TRUE),
-#'          method = "adaptMCMC",
-#'          n_draws = 5e3,
-#'          seed = 1,
-#'          sensitivity = 0.75,
-#'          specificity = 0.98,
-#'          verbose = TRUE,
-#'          acc.rate = 0.234)
-#' summary(PRICED_fit2)
+#' summary(PRICED_fit)
+#' coef(PRICED_fit)
+#' PRICED_data$parameters[[1]]
+#' 
 #' @export
 
 summary.PRICED = function(object,

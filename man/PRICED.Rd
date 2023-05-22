@@ -69,30 +69,14 @@ diagnostic errors.
 }
 \examples{
 PRICED_data =
-  simulate_PRICED(seed = 2023,N_subj = 500, N_time = 10)
+  simulate_PRICED(seed = 1,N_subj = 500, N_time = 10)
 
-formula_clearance =  p_observed ~ x1 + x2 + (time | subject)
-formula_clearance_oracle =  p ~ x1 + x2 + (time | subject)
-formula_incidence =  ~ x1 + x3
-formula_prevalence =  ~ x1
-
-# Fit the oracle model (no diagnostic error introduced)
-PRICED_fit0 =
-  PRICED(formula_prevalence,
-         formula_incidence,
-         formula_clearance_oracle,
-         PRICED_data$data[[1]],
-         prior_prevalence = list(location = 0, scale = 2.5, autoscale = TRUE),
-         prior_incidence = list(location = 0, scale = 2.5, autoscale = TRUE),
-         prior_clearance = list(location = 0, scale = 2.5, autoscale = TRUE),
-         method = "normal",
-         seed = 1,
-         sensitivity = 1,
-         specificity = 1,
-         verbose = TRUE)
+formula_clearance =  p_observed ~ x1 + x2 + x3 + (time | subject)
+formula_incidence =  ~ x1 + x2 + x3
+formula_prevalence =  ~ x1 + x2 + x3
 
 # Fit the PRICED model, accounting for diagnostic error
-PRICED_fit1 =
+PRICED_fit =
   PRICED(formula_prevalence,
          formula_incidence,
          formula_clearance,
@@ -101,40 +85,11 @@ PRICED_fit1 =
          prior_incidence = list(location = 0, scale = 2.5, autoscale = TRUE),
          prior_clearance = list(location = 0, scale = 2.5, autoscale = TRUE),
          method = "normal",
-         seed = 1,
          sensitivity = 0.75,
          specificity = 0.98,
          verbose = TRUE)
-
-# Fit the model, ignoring diagnostic error
-PRICED_fit2 =
-  PRICED(formula_prevalence,
-         formula_incidence,
-         formula_clearance,
-         PRICED_data$data[[1]],
-         prior_prevalence = list(location = 0, scale = 2.5, autoscale = TRUE),
-         prior_incidence = list(location = 0, scale = 2.5, autoscale = TRUE),
-         prior_clearance = list(location = 0, scale = 2.5, autoscale = TRUE),
-         method = "normal",
-         seed = 1,
-         sensitivity = 1,
-         specificity = 1,
-         verbose = TRUE)
-
-# Collate the results
-library(tibble)
-collated_results =
-  tibble(parameter = names(unlist(PRICED_data$parameters[[1]][c(3:1)])),
-         truth = unlist(PRICED_data$parameters[[1]][3:1]),
-         `oracle estimate` = coef(PRICED_fit0),
-         `PRICED estimate` = coef(PRICED_fit1),
-         `naive estimate` = coef(PRICED_fit2))
-print(collated_results)
-
-#Compute MSE:
-mean((collated_results$`oracle estimate` - collated_results$truth)^2)
-mean((collated_results$`PRICED estimate` - collated_results$truth)^2)
-mean((collated_results$`naive estimate` - collated_results$truth)^2)
-
+summary(PRICED_fit)
+coef(PRICED_fit)
+PRICED_data$parameters[[1]]
 
 }

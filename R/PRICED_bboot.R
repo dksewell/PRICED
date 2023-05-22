@@ -27,18 +27,22 @@
 #'
 #' @examples
 #' \dontrun{
-#'  PRICED_fit_parallel = PRICED_bboot(formula_prevalence = ~ x1 + x2 + x3,
-#'                                     formula_incidence = ~ x1 + x2 + x3,
-#'                                     formula_clearance = p_observed ~ x1 + x2 + x3 + (time | subject),
-#'                                     data = PRICED_data$data[[1]],
-#'                                     prior_prevalence = list(location = 0, scale = 2.5, autoscale = TRUE),
-#'                                     prior_incidence = list(location = 0, scale = 2.5, autoscale = TRUE),
+#' PRICED_data =
+#'   simulate_PRICED(seed = 1,N_subj = 500, N_time = 10)
+#' cl = makeCluster(detectCores())
+#' PRICED_fit_parallel = PRICED_bboot(formula_prevalence = ~ x1 + x2 + x3,
+#'                                    formula_incidence = ~ x1 + x2 + x3,
+#'                                    formula_clearance = p_observed ~ x1 + x2 + x3 + (time | subject),
+#'                                    data = PRICED_data$data[[1]],
+#'                                    prior_prevalence = list(location = 0, scale = 2.5, autoscale = TRUE),
+#'                                    prior_incidence = list(location = 0, scale = 2.5, autoscale = TRUE),
 #'                                    prior_clearance = list(location = 0, scale = 2.5, autoscale = TRUE),
 #'                                    sensitivity = 0.75,
 #'                                    specificity = 0.99,
 #'                                    n_bootstraps = detectCores() * 20,
 #'                                    cl,
 #'                                    verbose = TRUE)
+#' stopCluster(cl)
 #' summary(PRICED_fit_parallel)
 #' }
 #' 
