@@ -10,6 +10,8 @@
 #' @param bl_clearance_rate positive numeric, giving the overall rate of clearance
 #' @param sensitivity numeric, giving diagnostic test sensitivity
 #' @param specificity numeric, giving diagnostic test specificity
+#' @param beta_P_slopes, beta_I_slopes, beta_C_slopes numeric of length 3 corresponding 
+#' to the binary covariate and two continuous covariates respectively.
 #'
 #'
 #' @export

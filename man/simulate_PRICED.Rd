@@ -13,9 +13,9 @@ simulate_PRICED(
   bl_clearance_rate = 1/3,
   sensitivity = 0.75,
   specificity = 0.98,
-  beta_C_slopes = c(0, 1),
-  beta_I_slopes = c(-1.5, 0.5),
-  beta_pr_slope = 1.5
+  beta_P_slopes = c(2, -2, 0),
+  beta_I_slopes = c(2, -2, 0),
+  beta_C_slopes = c(-2, 2, 0)
 )
 }
 \arguments{
@@ -36,6 +36,9 @@ baseline prevalences for each pathogen type.}
 \item{sensitivity}{numeric, giving diagnostic test sensitivity}
 
 \item{specificity}{numeric, giving diagnostic test specificity}
+
+\item{beta_P_slopes, }{beta_I_slopes, beta_C_slopes numeric of length 3 corresponding
+to the binary covariate and two continuous covariates respectively.}
 }
 \description{
 Simulate data from the PRICED model

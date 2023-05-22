@@ -22,17 +22,12 @@
 #' @param ... Further arguments passed to adaptMCMC::MCMC() (if method = "adaptMCMC", otherwise ignored)
 #' For example, you'll probably want to pass in acc.rate = 0.234.
 #' @returns  Object of class 'PRICED' which has the following elements:
-#' * beta_C A matrix where each row is a posterior sample and each column is a regression
-#' coefficient in the clearance rate model
-#' * beta_I A matrix where each row is a posterior sample and each column is a regression
-#' coefficient in the incidence rate model
-#' * beta_pr  A matrix where each row is a posterior sample and each column is a regression
-#' coefficient in the prevalence model
-#' * data Original data frame/tibble with the following two columns added: (1) tau,
-#' the time between consecutive tests (within subject), and (2) presence_estimate,
-#' the posterior mean that the pathogen was present
-#' * priors List of prior hyperparameters used in the model fitting
-#' * acceptance_rate Acceptance rate for the adaptive Metropolis-Hastings
+#' * coefficients  posterior mean of the regression coefficients
+#' * covariance posterior covariance matrix (rows/columns in same order as coefficients)
+#' * samples  if method = "adaptMCMC", the posterior samples, minus 10% for burnin
+#' * acceptance rate  if method = "adaptMCMC", the acceptance rate
+#' * formula_prevalence, formula_incidence, formula_clearance 
+#' * priors  list of prior hyperparameters
 #'
 #' @examples
 #' PRICED_data =

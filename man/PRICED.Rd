@@ -53,17 +53,12 @@ For example, you'll probably want to pass in acc.rate = 0.234.}
 \value{
 Object of class 'PRICED' which has the following elements:
 \itemize{
-\item beta_C A matrix where each row is a posterior sample and each column is a regression
-coefficient in the clearance rate model
-\item beta_I A matrix where each row is a posterior sample and each column is a regression
-coefficient in the incidence rate model
-\item beta_pr  A matrix where each row is a posterior sample and each column is a regression
-coefficient in the prevalence model
-\item data Original data frame/tibble with the following two columns added: (1) tau,
-the time between consecutive tests (within subject), and (2) presence_estimate,
-the posterior mean that the pathogen was present
-\item priors List of prior hyperparameters used in the model fitting
-\item acceptance_rate Acceptance rate for the adaptive Metropolis-Hastings
+\item coefficients  posterior mean of the regression coefficients
+\item covariance posterior covariance matrix (rows/columns in same order as coefficients)
+\item samples  if method = "adaptMCMC", the posterior samples, minus 10\% for burnin
+\item acceptance rate  if method = "adaptMCMC", the acceptance rate
+\item formula_prevalence, formula_incidence, formula_clearance
+\item priors  list of prior hyperparameters
 }
 }
 \description{
